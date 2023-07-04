@@ -27,6 +27,9 @@ public class Application {
         printRoleInfo(roleService.getAllRoles());
         userService.createAccount("name", "login", "password", listOfROles[0], listOfROles[1]);
         System.out.println(userService.authStatus("name", "login", "password"));
+        System.out.println("Поиска юзера по роли");
+        printUserInfo(userService.getUserByRole("Аналитик"));
+        System.out.println("______________");
         printUserInfo(userService.getAllUser());
         List<User> user = userService.getAllUser();
         User newUser = user.get(1);

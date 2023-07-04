@@ -20,7 +20,7 @@ public class Role implements Serializable {
     private Long id;
     private String name;
 
-    @ManyToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "role", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @Fetch(FetchMode.SUBSELECT)
     private List<User> userList;
 

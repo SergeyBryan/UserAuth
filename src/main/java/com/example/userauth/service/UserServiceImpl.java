@@ -65,6 +65,16 @@ public class UserServiceImpl implements UserService {
         return userList;
     }
 
+    @Override
+    public List<User> getUserByRole(String name) {
+        EntityManager entityManager = Persistence.create();
+        List<User> userList = entityManager.createQuery("SELECT U FROM User U join fetch U.role r WHERE r.name=:name", User.class)
+                .setParameter("name", name)
+                .getResultList();
+        entityManager.close();
+        return userList;
+    }
+
 
     @Override
     public User getUser(Long id) {
@@ -92,6 +102,4 @@ public class UserServiceImpl implements UserService {
         entityManager.close();
         return userList.stream().anyMatch(user -> user.getName().equals(name));
     }
-
-
 }
