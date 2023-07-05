@@ -29,7 +29,7 @@ public class User {
     private LocalDateTime createDate;
     @Column(name = "modified_time")
     private LocalDateTime modifiedTime;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     @Fetch(FetchMode.SUBSELECT)
     @NotNull

@@ -59,9 +59,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<User> getAllUser() {
         EntityManager entityManager = Persistence.create();
-        List<User> userList = entityManager.createQuery("SELECT U FROM User U join fetch U.role r", User.class)
+        List<User> userList = entityManager.createQuery("SELECT U FROM User U "
+                        , User.class)
                 .getResultList();
         entityManager.close();
+        printAllUsers(userList);
         return userList;
     }
 
@@ -72,6 +74,7 @@ public class UserServiceImpl implements UserService {
                 .setParameter("name", name)
                 .getResultList();
         entityManager.close();
+        printAllUsers(userList);
         return userList;
     }
 
@@ -79,8 +82,9 @@ public class UserServiceImpl implements UserService {
     @Override
     public User getUser(Long id) {
         EntityManager entityManager = Persistence.create();
-        User user = entityManager.find(User.class, id);
+        User user = entityManager.createQuery("SELECT U FROM User U join fetch U.role r WHERE U.id =:id", User.class).setParameter("id", id).getSingleResult();
         entityManager.close();
+        printUser(user);
         return user;
     }
 
@@ -101,5 +105,26 @@ public class UserServiceImpl implements UserService {
                 .getResultList();
         entityManager.close();
         return userList.stream().anyMatch(user -> user.getName().equals(name));
+    }
+
+    private void printUser(User user) {
+        System.out.println("name: " + user.getName());
+        System.out.println("login: " + user.getLogin());
+        System.out.println("password: " + user.getPassword());
+        System.out.println("Created Date: " + user.getCreateDate());
+        System.out.println("Modified Date: " + user.getModifiedTime());
+        for (Role role : user.getRole()) {
+            System.out.println("role: " + role.getName());
+        }
+    }
+
+    private void printAllUsers(List<User> list) {
+        for (User user : list) {
+            System.out.println("name: " + user.getName());
+            System.out.println("login: " + user.getLogin());
+            System.out.println("password: " + user.getPassword());
+            System.out.println("Created Date: " + user.getCreateDate());
+            System.out.println("Modified Date: " + user.getModifiedTime());
+        }
     }
 }

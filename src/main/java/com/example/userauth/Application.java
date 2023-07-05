@@ -28,14 +28,18 @@ public class Application {
         userService.createAccount("name", "login", "password", listOfROles[0], listOfROles[1]);
         System.out.println(userService.authStatus("name", "login", "password"));
         System.out.println("Поиска юзера по роли");
-        printUserInfo(userService.getUserByRole("Аналитик"));
+        userService.getUserByRole("Аналитик");
         System.out.println("______________");
-        printUserInfo(userService.getAllUser());
+        System.out.println("все пользователи");
+        userService.getAllUser();
+        List<User> users = userService.getAllUser();
+        System.out.println("По юзер id");
+        userService.getUser(users.get(0).getId());
         List<User> user = userService.getAllUser();
-        User newUser = user.get(1);
+        User newUser = user.get(0);
         newUser.setName("Frog");
-        userService.update(user.get(1).getId(), newUser);
-        printUserInfo(userService.getAllUser());
+        userService.update(user.get(0).getId(), newUser);
+        userService.getAllUser();
         userService.delete(newUser.getId());
     }
 
@@ -48,19 +52,6 @@ public class Application {
                 System.out.println("password: " + user.getPassword());
                 System.out.println("name: " + user.getName());
                 System.out.println("Date: " + user.getCreateDate());
-            }
-        }
-    }
-
-    private static void printUserInfo(List<User> list) {
-        for (User user : list) {
-            System.out.println("name: " + user.getName());
-            System.out.println("login: " + user.getLogin());
-            System.out.println("password: " + user.getPassword());
-            System.out.println("Created Date: " + user.getCreateDate());
-            System.out.println("Modified Date: " + user.getModifiedTime());
-            for (Role role : user.getRole()) {
-                System.out.println("role: " + role.getName());
             }
         }
     }
